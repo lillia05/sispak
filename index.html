@@ -20,18 +20,16 @@
         body {
             font-family: 'Segoe UI', sans-serif;
             background-color: var(--light-bg);
-            /* PERBAIKAN: Padding dikurangi dari 76px jadi 56px biar nempel */
             padding-top: 56px; 
             display: flex;
             flex-direction: column;
             min-height: 100vh; 
         }
 
-        /* --- HEADER / NAVBAR (COKLAT) --- */
+        /* --- HEADER / NAVBAR --- */
         .navbar-custom {
             background-color: var(--primary-color);
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            /* Opsional: Pastikan tinggi navbar minimal setara padding body jika logo membesar */
             min-height: 56px; 
         }
         .navbar-brand {
@@ -49,18 +47,24 @@
             color: #fff !important;
             opacity: 1;
         }
+
+        /* --- MENU AKTIF (HIGHLIGHT) --- */
+        .nav-link.active-page {
+            font-weight: bold;
+            border-bottom: 2px solid var(--secondary-color);
+            color: #fff !important;
+        }
         
-        /* Tombol "Mulai Diagnosa" di Navbar */
         .btn-nav-action {
             background-color: white;
-            color: var(--primary-color); /* Teks Coklat */
+            color: var(--primary-color);
             font-weight: bold;
             border-radius: 50px;
             padding: 8px 25px;
             transition: 0.3s;
         }
         .btn-nav-action:hover {
-            background-color: var(--secondary-color); /* Hover jadi Hijau */
+            background-color: var(--secondary-color);
             color: #294B2D;
         }
 
@@ -75,7 +79,6 @@
             justify-content: center;
             color: white;
             text-align: center;
-            /* Opsional: Margin negatif kecil untuk memastikan tidak ada celah pixel */
             margin-top: -1px; 
         }
 
@@ -101,17 +104,13 @@
         .feature-icon-box {
             width: 80px;
             height: 80px;
-            /* Opsional: Saya ganti backgroundnya pakai primary color tapi ditransparankan (0.1) biar senada */
             background-color: rgba(41, 75, 45, 0.1); 
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             margin: 0 auto 20px;
-            
-            /* INI YANG DIGANTI: Warna ikon jadi Hijau Tua (Primary) */
             color: var(--primary-color); 
-            
             font-size: 2.5rem;
         }
 
@@ -140,13 +139,14 @@
             border-radius: 20px;
             text-decoration: none;
             display: inline-block;
+            transition: 0.3s;
         }
         .btn-detail:hover {
-            background-color: var(--secondary-color);
-            color: var(--primary-color);
+            background-color: var(--primary-color);
+            color: var(--secondary-color);
         }
 
-        /* --- FOOTER (COKLAT) --- */
+        /* --- FOOTER --- */
         footer {
             background-color: var(--primary-color); 
             color: rgba(255,255,255,0.8);
@@ -162,15 +162,16 @@
     <nav class="navbar navbar-expand-lg navbar-custom fixed-top">
       <div class="container">
         <a class="navbar-brand" href="index.html">
-            <i class="fas fa-coffee me-2"></i>SISPAKO </a>
+            <i class="fas fa-leaf me-2"></i>SISPAKO 
+        </a>
         <button class="navbar-toggler border-0 text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
           <i class="fas fa-bars"></i>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav ms-auto align-items-center">
-            <li class="nav-item"><a class="nav-link fw-bold" href="index.html">Beranda</a></li>
+            <li class="nav-item"><a class="nav-link active-page" href="index.html">Beranda</a></li>
             <li class="nav-item"><a class="nav-link" href="penyakit.html">Info Penyakit</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">Tentang</a></li>
+            <li class="nav-item"><a class="nav-link" href="tentang.html">Tentang</a></li>
             <li class="nav-item ms-lg-2 mt-2 mt-lg-0">
                 <a class="btn btn-nav-action shadow-sm" href="diagnosa.html">Mulai Diagnosa</a>
             </li>
@@ -194,52 +195,51 @@
 
     <section class="py-5" style="background-color: #f0f4f0;">
         <div class="container">
-            <div class="row align-items-end mb-4">
-                <div class="col-md-8">
-                    <h5 class="text-success fw-bold">INFORMASI</h5>
-                    <h2 class="fw-bold" style="color: var(--primary-color);">Kenali Musuh Tanaman Kopi</h2>
-                    <p class="text-muted">Berikut adalah beberapa penyakit umum yang sering menyerang daun kopi.</p>
-                </div>
-                <div class="col-md-4 text-md-end">
-                    <a href="penyakit.html" class="btn btn-outline-success rounded-pill px-4">Lihat Semua Penyakit <i class="fas fa-arrow-right ms-2"></i></a>
-                </div>
+            
+            <div class="text-center mb-5">
+                <h2 class="fw-bold" style="color: var(--primary-color);">Kenali Musuh Tanaman Kopi</h2>
+                <p class="text-muted">Berikut adalah beberapa penyakit umum yang sering menyerang daun kopi.</p>
             </div>
 
             <div class="row g-4">
                 <div class="col-md-4">
                     <div class="card card-penyakit">
-                        <img src="https://images.unsplash.com/photo-1597916829826-02e5bb4a54e0?q=80&w=600&auto=format&fit=crop" class="card-img-top" alt="Karat Daun">
+                        <img src="karat_daun.png" class="card-img-top" alt="Karat Daun">
                         <div class="card-body">
                             <h5 class="card-title fw-bold">Karat Daun</h5>
                             <h6 class="text-muted fst-italic mb-2">Hemileia vastatrix</h6>
                             <p class="card-text small text-secondary">Penyakit paling merugikan. Ditandai dengan bercak kuning jingga seperti serbuk.</p>
-                            <a href="penyakit.html" class="btn btn-sm btn-detail w-100 mt-2">Baca Selengkapnya</a>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="card card-penyakit">
-                        <img src="https://plus.unsplash.com/premium_photo-1664302152994-e69df8b13994?q=80&w=600&auto=format&fit=crop" class="card-img-top" alt="Bercak Daun">
+                        <img src="cercospora.png" class="card-img-top" alt="Bercak Daun">
                         <div class="card-body">
-                            <h5 class="card-title fw-bold">Bercak Daun</h5>
+                            <h5 class="card-title fw-bold">Bercak Cercospora</h5>
                             <h6 class="text-muted fst-italic mb-2">Cercospora coffeicola</h6>
                             <p class="card-text small text-secondary">Gejala berupa bercak bulat berwarna coklat dengan pusat berwarna putih kelabu.</p>
-                            <a href="penyakit.html" class="btn btn-sm btn-detail w-100 mt-2">Baca Selengkapnya</a>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="card card-penyakit">
-                        <img src="https://images.unsplash.com/photo-1628189498226-068305c48602?q=80&w=600&auto=format&fit=crop" class="card-img-top" alt="Jamur Upas">
+                        <img src="phoma.png" class="card-img-top" alt="Jamur Upas">
                         <div class="card-body">
-                            <h5 class="card-title fw-bold">Jamur Upas</h5>
-                            <h6 class="text-muted fst-italic mb-2">Corticium salmonicolor</h6>
+                            <h5 class="card-title fw-bold">Bercak Phoma</h5>
+                            <h6 class="text-muted fst-italic mb-2">Phoma costarricensis</h6>
                             <p class="card-text small text-secondary">Terlihat seperti jaring laba-laba putih atau lapisan kerak merah muda pada ranting.</p>
-                            <a href="penyakit.html" class="btn btn-sm btn-detail w-100 mt-2">Baca Selengkapnya</a>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <div class="text-center mt-5">
+                <a href="penyakit.html" class="btn btn-detail rounded-pill px-5 py-2">
+                    Baca Selengkapnya
+                </a>
+            </div>
+
         </div>
     </section>
 
@@ -278,14 +278,20 @@
                     </div>
                 </div>
             </div>
+
+            <div class="text-center mt-5">
+                <a href="tentang.html" class="btn btn-detail rounded-pill px-5 py-2">
+                    Lihat Selengkapnya
+                </a>
+            </div>
+
         </div>
     </section>
-
 
     <footer class="text-center">
         <div class="container">
             <h5 class="fw-bold text-white mb-3">SISPAKO</h5>
-            <p class="small mb-4 text-white-50">Sistem Pakar Deteksi Penyakit Kopi berbasis Web.<br>Membantu petani meningkatkan kualitas panen.</p>
+            <p class="small mb-4 text-white-50">Sistem Pakar Deteksi Penyakit Daun Kopi.<br>Membantu petani meningkatkan kualitas panen.</p>
             
             <div class="mb-4">
                 <a href="#" class="text-white me-3"><i class="fab fa-facebook fa-lg"></i></a>
