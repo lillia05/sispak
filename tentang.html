@@ -57,7 +57,7 @@
             background-size: cover;
             background-position: center;
             color: white;
-            padding: 80px 0;
+            padding: 40px 0;
             text-align: center;
             margin-bottom: 0;
         }
@@ -127,6 +127,24 @@
             border: 4px solid var(--secondary-color);
         }
 
+        /* --- STYLE TOMBOL CUSTOM (BARU DITAMBAHKAN) --- */
+        .btn-outline-custom {
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+            background-color: transparent; /* Awalnya transparan */
+            font-weight: bold;
+            border-radius: 50px;
+            text-decoration: none;
+            transition: all 0.3s ease; /* Animasi halus */
+        }
+
+        .btn-outline-custom:hover {
+            background-color: var(--primary-color); /* Hover jadi hijau */
+            color: var(--secondary-color); /* Teks jadi hijau muda */
+            box-shadow: 0 5px 15px rgba(41, 75, 45, 0.4);
+            transform: translateY(-3px); /* Efek naik */
+        }
+
         /* --- FOOTER --- */
         footer {
             background-color: var(--primary-color); 
@@ -163,8 +181,8 @@
 
     <div class="page-header">
         <div class="container">
-            <h1 class="display-4 fw-bold">Tentang SISPAKO</h1>
-            <p class="lead opacity-75">Mengenal lebih dekat Sistem Pakar Deteksi Penyakit Kopi.</p>
+            <h1 class="fw-bold">Tentang SISPAKO</h1>
+            <p class="mb-0 opacity-75">Mengenal lebih dekat Sistem Pakar Deteksi Penyakit Kopi.</p>
         </div>
     </div>
 
@@ -177,7 +195,7 @@
                         <strong>SISPAKO</strong> (Sistem Pakar Kopi) adalah sebuah aplikasi berbasis web yang dirancang untuk membantu petani dan penyuluh pertanian dalam mendiagnosa penyakit pada tanaman kopi secara dini.
                     </p>
                     <p class="text-secondary">
-                        Sistem ini mengadopsi pengetahuan dari para pakar pertanian dan menerapkannya ke dalam logika komputer. Dengan menggunakan metode <strong>Logika Fuzzy</strong>, SISPAKO tidak hanya memberikan jawaban "Ya" atau "Tidak", melainkan mampu menghitung tingkat kemungkinan (persentase) penyakit berdasarkan gejala-gejala yang terlihat di lapangan, bahkan ketika gejalanya masih samar.
+                        Sistem ini mengadopsi pengetahuan dari para pakar pertanian dan menerapkannya ke dalam logika komputer. Dengan menggunakan metode <strong>Logika Fuzzy</strong>, SISPAKO tidak hanya memberikan jawaban "Ya" atau "Tidak", melainkan mampu menghitung tingkat kemungkinan (persentase) penyakit berdasarkan gejala-gejala yang terlihat di lapangan.
                     </p>
                 </div>
                 <div class="col-md-6 text-center">
@@ -266,6 +284,7 @@
     <section class="py-5" style="background-color: #f0f4f0;">
         <div class="container">
             <div class="text-center mb-5">
+                <h5 class="text-success fw-bold">DEVELOPER</h5>
                 <h2 class="fw-bold" style="color: var(--primary-color);">Tim Pengembang</h2>
                 <p class="text-muted">Orang-orang dibalik layar SISPAKO</p>
             </div>
@@ -282,7 +301,7 @@
 
                 <div class="col-md-4">
                     <div class="dev-card h-100">
-                        <img src="https://via.placeholder.com/150" alt="Foto Dev 2" class="dev-img">
+                        <img src="riskur.jpeg" alt="Foto Dev 2" class="dev-img">
                         <h4 class="fw-bold mb-1">Rizky Kurnia Antasari</h4>
                         <p class="text-success fw-bold small">2357051011</p>
                     </div>
@@ -290,7 +309,7 @@
 
                 <div class="col-md-4">
                     <div class="dev-card h-100">
-                        <img src="https://via.placeholder.com/150" alt="Foto Dev 3" class="dev-img">
+                        <img src="nadya.jpeg" alt="Foto Dev 3" class="dev-img">
                         <h4 class="fw-bold mb-1">Nadya Arsa</h4>
                         <p class="text-success fw-bold small">2317051097</p>
                     </div>
@@ -304,7 +323,8 @@
         <div class="container">
             <h3 class="fw-bold mb-3" style="color: var(--primary-color);">Siap Memeriksa Tanaman Anda?</h3>
             <p class="text-muted mb-4">Lakukan diagnosa sekarang untuk mencegah kerusakan lebih lanjut.</p>
-            <a href="diagnosa.html" class="btn btn-nav-action bg-success text-white px-5 py-3 shadow">
+            
+            <a href="diagnosa.html" class="btn btn-outline-custom px-5 py-3 shadow-sm">
                 <i class="fas fa-search me-2"></i> Mulai Diagnosa
             </a>
         </div>
