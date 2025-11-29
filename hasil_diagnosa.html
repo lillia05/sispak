@@ -71,6 +71,22 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
+        /* --- GAMBAR HASIL PENYAKIT (BARU) --- */
+        .result-img-wrapper {
+            text-align: center;
+            margin-bottom: 30px;
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #eee;
+        }
+        .result-img {
+            max-width: 100%;
+            height: 250px;
+            object-fit: contain;
+            border-radius: 5px;
+        }
+
         /* --- PROGRESS BAR --- */
         .progress {
             height: 25px;
@@ -85,7 +101,7 @@
             background-color: #6c757d;
         }
 
-        /* --- TOMBOL DIAGNOSA ULANG --- */
+        /* --- TOMBOL --- */
         .btn-outline-custom {
             color: var(--primary-color);
             border: 2px solid var(--primary-color);
@@ -93,7 +109,6 @@
             font-weight: bold;
             transition: all 0.3s ease;
         }
-
         .btn-outline-custom:hover {
             background-color: var(--primary-color);
             color: white;
@@ -101,19 +116,18 @@
             transform: translateY(-2px);
         }
 
-        /* --- LINK KEMBALI KE BERANDA --- */
+        /* --- LINK KEMBALI --- */
         .link-back {
-            color: #6c757d; /* Abu-abu default */
+            color: #6c757d;
             text-decoration: none;
             font-weight: 500;
-            transition: 0.3s ease; /* Transisi halus */
+            transition: 0.3s ease;
             display: inline-block;
             margin-top: 15px;
         }
-
         .link-back:hover {
-            color: var(--primary-color) !important; /* Berubah jadi Hijau saat hover */
-            transform: translateY(-3px); /* Gerak dikit ke atas */
+            color: var(--primary-color) !important;
+            transform: translateY(-3px);
         }
 
         /* --- FOOTER --- */
@@ -151,9 +165,14 @@
 
                     <div id="result-content">
                         
-                        <div class="text-center mb-5">
+                        <div class="text-center mb-4">
                             <span class="badge rounded-pill px-3 py-2 mb-2" style="background-color: var(--secondary-color); color: var(--primary-color); font-weight: bold;">Analisa Selesai</span>
                             <h2 class="fw-bold" style="color: var(--primary-color);">Hasil Diagnosa</h2>
+                        </div>
+
+                        <div class="result-img-wrapper">
+                            <p class="text-muted small mb-2">Teridentifikasi Visual:</p>
+                            <img src="cercospora.png" alt="Gambar Penyakit Terdeteksi" class="result-img">
                         </div>
 
                         <div class="mb-4">
@@ -209,14 +228,7 @@
     <footer class="text-center">
         <div class="container">
             <h5 class="fw-bold text-white mb-3">SISPAKO</h5>
-            <p class="small mb-4 text-white-50">Sistem Pakar Deteksi Penyakit Daun Kopi.<br>Membantu petani meningkatkan kualitas panen.</p>
-            
-            <div class="mb-4">
-                <a href="#" class="text-white me-3"><i class="fab fa-facebook fa-lg"></i></a>
-                <a href="#" class="text-white me-3"><i class="fab fa-instagram fa-lg"></i></a>
-                <a href="#" class="text-white"><i class="fab fa-twitter fa-lg"></i></a>
-            </div>
-
+            <p class="small mb-4 text-white-50">Sistem Pakar Deteksi Penyakit Kopi berbasis Web.</p>
             <p class="mb-0 border-top border-secondary pt-3 small">&copy; 2025 SISPAKO. All rights reserved.</p>
         </div>
     </footer>
