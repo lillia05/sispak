@@ -1,44 +1,51 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tentang Kami - SISPAKO</title>
-    
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
     <style>
         :root {
             /* --- PALET WARNA (KONSISTEN) --- */
-            --primary-color: #294B2D;   /* Hijau Tua */
-            --secondary-color: #DBE7C9; /* Hijau Muda */
-            --accent-color: #294B2D;    
-            --light-bg: #DBE7C9;       
+            --primary-color: #294B2D;
+            /* Hijau Tua */
+            --secondary-color: #DBE7C9;
+            /* Hijau Muda */
+            --accent-color: #294B2D;
+            --light-bg: #DBE7C9;
         }
 
         body {
             font-family: 'Segoe UI', sans-serif;
             background-color: #f8f9fa;
-            padding-top: 56px; 
+            padding-top: 56px;
             display: flex;
             flex-direction: column;
-            min-height: 100vh; 
+            min-height: 100vh;
         }
 
         /* --- NAVBAR --- */
         .navbar-custom {
             background-color: var(--primary-color);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            min-height: 56px; 
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            min-height: 56px;
         }
-        .navbar-brand, .nav-link {
+
+        .navbar-brand,
+        .nav-link {
             color: #fff !important;
         }
+
         .nav-link.active-page {
             font-weight: bold;
             border-bottom: 2px solid var(--secondary-color);
         }
+
         .btn-nav-action {
             background-color: white;
             color: var(--primary-color);
@@ -47,6 +54,7 @@
             padding: 8px 25px;
             transition: 0.3s;
         }
+
         .btn-nav-action:hover {
             background-color: var(--secondary-color);
             color: #294B2D;
@@ -71,7 +79,7 @@
             position: relative;
             display: inline-block;
         }
-        
+
         .section-title::after {
             content: '';
             display: block;
@@ -85,12 +93,12 @@
             background: white;
             padding: 25px;
             border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
             height: 100%;
             border-top: 4px solid var(--primary-color);
             transition: 0.3s;
         }
-        
+
         .box-fungsi:hover {
             transform: translateY(-5px);
         }
@@ -99,13 +107,13 @@
         .feature-icon-box {
             width: 80px;
             height: 80px;
-            background-color: rgba(41, 75, 45, 0.1); 
+            background-color: rgba(41, 75, 45, 0.1);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             margin: 0 auto 20px;
-            color: var(--primary-color); 
+            color: var(--primary-color);
             font-size: 2.5rem;
         }
 
@@ -114,10 +122,11 @@
             background-color: white;
             border-radius: 15px;
             overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
             text-align: center;
             padding: 30px;
         }
+
         .dev-img {
             width: 120px;
             height: 120px;
@@ -132,53 +141,41 @@
         .btn-outline-custom {
             color: var(--primary-color);
             border: 2px solid var(--primary-color);
-            background-color: transparent; /* Awalnya transparan */
+            background-color: transparent;
+            /* Awalnya transparan */
             font-weight: bold;
             border-radius: 50px;
             text-decoration: none;
-            transition: all 0.3s ease; /* Animasi halus */
+            transition: all 0.3s ease;
+            /* Animasi halus */
         }
 
         .btn-outline-custom:hover {
-            background-color: var(--primary-color); /* Hover jadi hijau */
-            color: var(--secondary-color); /* Teks jadi hijau muda */
+            background-color: var(--primary-color);
+            /* Hover jadi hijau */
+            color: var(--secondary-color);
+            /* Teks jadi hijau muda */
             box-shadow: 0 5px 15px rgba(41, 75, 45, 0.4);
-            transform: translateY(-3px); /* Efek naik */
+            transform: translateY(-3px);
+            /* Efek naik */
         }
 
         /* --- FOOTER --- */
         footer {
-            background-color: var(--primary-color); 
-            color: rgba(255,255,255,0.8);
+            background-color: var(--primary-color);
+            color: rgba(255, 255, 255, 0.8);
             padding-top: 3rem;
             padding-bottom: 1.5rem;
-            margin-top: auto; 
-            border-top: 5px solid var(--accent-color); 
+            margin-top: auto;
+            border-top: 5px solid var(--accent-color);
         }
     </style>
 </head>
+
 <body>
 
-    <nav class="navbar navbar-expand-lg navbar-custom fixed-top">
-      <div class="container">
-        <a class="navbar-brand fw-bold" href="index.html">
-            <i class="fas fa-leaf me-2"></i>SISPAKO 
-        </a>
-        <button class="navbar-toggler border-0 text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-          <i class="fas fa-bars"></i>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav ms-auto align-items-center">
-            <li class="nav-item"><a class="nav-link" href="index.html">Beranda</a></li>
-            <li class="nav-item"><a class="nav-link" href="penyakit.html">Info Penyakit</a></li>
-            <li class="nav-item"><a class="nav-link active-page" href="tentang.html">Tentang</a></li>
-            <li class="nav-item ms-lg-2 mt-2 mt-lg-0">
-                <a class="btn btn-nav-action shadow-sm" href="diagnosa.html">Mulai Diagnosa</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
+    <!-- [ Manggil Navbar ] -->
+    {% include 'components/navbar.html' %}
 
     <div class="page-header">
         <div class="container">
@@ -193,14 +190,20 @@
                 <div class="col-md-6">
                     <h2 class="section-title">Apa Itu SISPAKO?</h2>
                     <p class="lead text-dark">
-                        <strong>SISPAKO</strong> (Sistem Pakar Kopi) adalah sebuah aplikasi berbasis web yang dirancang untuk membantu petani dan penyuluh pertanian dalam mendiagnosa penyakit pada tanaman kopi secara dini.
+                        <strong>SISPAKO</strong> (Sistem Pakar Kopi) adalah sebuah aplikasi berbasis web yang dirancang
+                        untuk membantu petani dan penyuluh pertanian dalam mendiagnosa penyakit pada tanaman kopi secara
+                        dini.
                     </p>
                     <p class="text-secondary">
-                        Sistem ini mengadopsi pengetahuan dari para pakar pertanian dan menerapkannya ke dalam logika komputer. Dengan menggunakan metode <strong>Logika Fuzzy</strong>, SISPAKO tidak hanya memberikan jawaban "Ya" atau "Tidak", melainkan mampu menghitung tingkat kemungkinan (persentase) penyakit berdasarkan gejala-gejala yang terlihat di lapangan.
+                        Sistem ini mengadopsi pengetahuan dari para pakar pertanian dan menerapkannya ke dalam logika
+                        komputer. Dengan menggunakan metode <strong>Logika Fuzzy</strong>, SISPAKO tidak hanya
+                        memberikan jawaban "Ya" atau "Tidak", melainkan mampu menghitung tingkat kemungkinan
+                        (persentase) penyakit berdasarkan gejala-gejala yang terlihat di lapangan.
                     </p>
                 </div>
                 <div class="col-md-6 text-center">
-                    <img src="https://img.freepik.com/free-vector/coffee-shop-concept-illustration_114360-1282.jpg?w=740&t=st=1708500000~exp=1708500600~hmac=xxxxx" alt="Ilustrasi Teknologi Kopi" class="img-fluid rounded" style="max-height: 300px;">
+                    <img src="https://img.freepik.com/free-vector/coffee-shop-concept-illustration_114360-1282.jpg?w=740&t=st=1708500000~exp=1708500600~hmac=xxxxx"
+                        alt="Ilustrasi Teknologi Kopi" class="img-fluid rounded" style="max-height: 300px;">
                     <p class="small text-muted mt-2 fst-italic">Teknologi untuk pertanian yang lebih baik.</p>
                 </div>
             </div>
@@ -217,9 +220,11 @@
             <div class="row g-4">
                 <div class="col-md-4">
                     <div class="box-fungsi">
-                        <h4 class="fw-bold mb-3"><i class="fas fa-stethoscope text-success me-2"></i>Alat Diagnosa Mandiri</h4>
+                        <h4 class="fw-bold mb-3"><i class="fas fa-stethoscope text-success me-2"></i>Alat Diagnosa
+                            Mandiri</h4>
                         <p class="text-muted">
-                            Memungkinkan petani melakukan pemeriksaan kesehatan tanaman secara mandiri tanpa harus menunggu kedatangan penyuluh pertanian, sehingga penanganan bisa lebih cepat.
+                            Memungkinkan petani melakukan pemeriksaan kesehatan tanaman secara mandiri tanpa harus
+                            menunggu kedatangan penyuluh pertanian, sehingga penanganan bisa lebih cepat.
                         </p>
                     </div>
                 </div>
@@ -227,15 +232,18 @@
                     <div class="box-fungsi">
                         <h4 class="fw-bold mb-3"><i class="fas fa-book-open text-success me-2"></i>Media Edukasi</h4>
                         <p class="text-muted">
-                            Menjadi sarana pembelajaran bagi petani pemula untuk mengenali ciri-ciri fisik penyakit seperti Karat Daun, Cercospora, dan Phoma melalui galeri dan deskripsi detail.
+                            Menjadi sarana pembelajaran bagi petani pemula untuk mengenali ciri-ciri fisik penyakit
+                            seperti Karat Daun, Cercospora, dan Phoma melalui galeri dan deskripsi detail.
                         </p>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="box-fungsi">
-                        <h4 class="fw-bold mb-3"><i class="fas fa-hand-holding-medical text-success me-2"></i>Rekomendasi Solusi</h4>
+                        <h4 class="fw-bold mb-3"><i
+                                class="fas fa-hand-holding-medical text-success me-2"></i>Rekomendasi Solusi</h4>
                         <p class="text-muted">
-                            Tidak hanya mendeteksi masalah, sistem ini memberikan saran pengendalian yang tepat (baik secara teknis maupun kimiawi) sesuai dengan jenis penyakit yang terdeteksi.
+                            Tidak hanya mendeteksi masalah, sistem ini memberikan saran pengendalian yang tepat (baik
+                            secara teknis maupun kimiawi) sesuai dengan jenis penyakit yang terdeteksi.
                         </p>
                     </div>
                 </div>
@@ -257,7 +265,8 @@
                             <i class="fas fa-brain"></i>
                         </div>
                         <h4 class="fw-bold" style="color: var(--primary-color)">Logika Fuzzy</h4>
-                        <p class="text-muted">Sistem mampu mengolah data ketidakpastian (samar) dari gejala visual menjadi hasil diagnosa yang memiliki nilai akurasi tinggi.</p>
+                        <p class="text-muted">Sistem mampu mengolah data ketidakpastian (samar) dari gejala visual
+                            menjadi hasil diagnosa yang memiliki nilai akurasi tinggi.</p>
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -266,7 +275,8 @@
                             <i class="fas fa-bolt"></i>
                         </div>
                         <h4 class="fw-bold" style="color: var(--primary-color)">Hasil Cepat</h4>
-                        <p class="text-muted">Proses komputasi dilakukan secara real-time. Hasil diagnosa dan saran penanganan muncul dalam hitungan detik.</p>
+                        <p class="text-muted">Proses komputasi dilakukan secara real-time. Hasil diagnosa dan saran
+                            penanganan muncul dalam hitungan detik.</p>
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -275,7 +285,8 @@
                             <i class="fas fa-user-md"></i>
                         </div>
                         <h4 class="fw-bold" style="color: var(--primary-color)">Solusi Terpercaya</h4>
-                        <p class="text-muted">Basis pengetahuan (Knowledge Base) sistem ini disusun berdasarkan literatur ilmiah dan validasi pakar pertanian.</p>
+                        <p class="text-muted">Basis pengetahuan (Knowledge Base) sistem ini disusun berdasarkan
+                            literatur ilmiah dan validasi pakar pertanian.</p>
                     </div>
                 </div>
             </div>
@@ -291,10 +302,10 @@
             </div>
 
             <div class="row g-4 justify-content-center">
-                
+
                 <div class="col-md-4">
                     <div class="dev-card h-100">
-                        <img src="lia.jpeg" alt="Foto Dev 1" class="dev-img">
+                        <img src="/static/img/lia.jpeg" alt="Foto Dev 1" class="dev-img">
                         <h4 class="fw-bold mb-1">Lekok Indah Lia</h4>
                         <p class="text-success fw-bold small">2317051097</p>
                     </div>
@@ -302,7 +313,7 @@
 
                 <div class="col-md-4">
                     <div class="dev-card h-100">
-                        <img src="riskur.jpeg" alt="Foto Dev 2" class="dev-img">
+                        <img src="/static/img/riskur.jpeg" alt="Foto Dev 2" class="dev-img">
                         <h4 class="fw-bold mb-1">Rizky Kurnia Antasari</h4>
                         <p class="text-success fw-bold small">2357051011</p>
                     </div>
@@ -310,7 +321,7 @@
 
                 <div class="col-md-4">
                     <div class="dev-card h-100">
-                        <img src="nadya.jpeg" alt="Foto Dev 3" class="dev-img">
+                        <img src="/static/img/nadya.jpeg" alt="Foto Dev 3" class="dev-img">
                         <h4 class="fw-bold mb-1">Nadya Arsa</h4>
                         <p class="text-success fw-bold small">2317051097</p>
                     </div>
@@ -324,29 +335,17 @@
         <div class="container">
             <h3 class="fw-bold mb-3" style="color: var(--primary-color);">Siap Memeriksa Tanaman Anda?</h3>
             <p class="text-muted mb-4">Lakukan diagnosa sekarang untuk mencegah kerusakan lebih lanjut.</p>
-            
-            <a href="diagnosa.html" class="btn btn-outline-custom px-5 py-3 shadow-sm">
+
+            <a href="{{ url_for('diagnosa') }}" class="btn btn-outline-custom px-5 py-3 shadow-sm">
                 <i class="fas fa-search me-2"></i> Mulai Diagnosa
             </a>
         </div>
     </section>
 
-    <footer class="text-center">
-        <div class="container">
-            <h5 class="fw-bold text-white mb-3">SISPAKO</h5>
-            <p class="small mb-4 text-white-50">Sistem Pakar Deteksi Penyakit Daun Kopi.<br>Membantu petani meningkatkan kualitas panen.</p>
-            
-            <div class="mb-4">
-                <a href="#" class="text-white me-3"><i class="fab fa-facebook fa-lg"></i></a>
-                <a href="#" class="text-white me-3"><i class="fab fa-instagram fa-lg"></i></a>
-                <a href="#" class="text-white"><i class="fab fa-twitter fa-lg"></i></a>
-            </div>
-
-            <p class="mb-0 border-top border-secondary pt-3 small">&copy; 2025 SISPAKO. All rights reserved.</p>
-        </div>
-    </footer>
+    {% include 'components/footer.html' %}
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
+
 </html>
