@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulir Diagnosa - SISPAKO</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary-color: #294B2D;
+            --secondary-color: #DBE7C9;
+            --accent-color: #294B2D;
+            --light-bg: #DBE7C9;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: var(--light-bg);
+            padding-top: 56px;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .navbar-custom {
+            background-color: var(--primary-color);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            min-height: 56px;
+        }
+
+        .navbar-brand,
+        .nav-link {
+            color: #fff !important;
+        }
+
+        .btn-nav-active {
+            background-color: var(--secondary-color) !important;
+            color: var(--primary-color) !important;
+            font-weight: bold;
+            border-radius: 50px;
+            padding: 8px 25px;
+            transition: 0.3s;
+        }
+
+        /* Revisi CSS Card agar tidak redundant */
+        .card-form {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            background-color: white;
+            overflow: hidden;
+            /* Padding dipindah ke class bootstrap p-4 di HTML */
+        }
+
+        .upload-area {
+            border: 2px dashed var(--primary-color);
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            background-color: #f8fdf8;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-bottom: 30px;
+        }
+
+        .upload-area:hover {
+            background-color: #eafbe9;
+        }
+
+        .upload-icon {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        #imagePreview {
+            display: none;
+            max-width: 100%;
+            max-height: 300px;
+            margin-top: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-select {
+            border-radius: 10px;
+            border: 1px solid #ddd;
+            padding: 12px;
+            cursor: pointer;
+        }
+
+        .form-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.25rem rgba(41, 75, 45, 0.25);
+        }
+
+        .page-header {
+            background: linear-gradient(rgba(41, 75, 45, 0.9), rgba(41, 75, 45, 0.8)), url('kopi.png');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 43px 0;
+            text-align: center;
+            margin-bottom: 0;
+        }
+
+        footer {
+            background-color: var(--primary-color);
+            color: rgba(255, 255, 255, 0.8);
+            padding-top: 3rem;
+            padding-bottom: 1.5rem;
+            margin-top: auto;
+            border-top: 5px solid var(--secondary-color);
+        }
+
+        /* Loading Spinner */
+        .spinner-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .spinner-content {
+            text-align: center;
+            color: white;
+        }
+
+        /* Modal Hasil */
+        .result-badge {
+            font-size: 1.2rem;
+            padding: 10px 20px;
+            border-radius: 50px;
+        }
+
+        .sample-card {
+            border: 2px solid var(--primary-color);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: 0.25s ease;
+        }
+
+        .sample-img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+
+        .sample-label {
+            text-align: center;
+            font-weight: 600;
+            padding: 8px 0;
+            font-size: 0.9rem;
+            background: #fff;
+        }
+
+        .sample-card:hover {
+            transform: scale(1.03);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+        }
+    </style>
+</head>
+
+<body>
+
+    {% include 'components/navbar.html' %}
+
+    <div class="page-header">
+        <div class="container">
+            <h2 class="fw-bold">Form Diagnosa Penyakit Daun Kopi</h2>
+            <p class="mb-0 opacity-75">Upload foto daun dan isi gejala yang terlihat.</p>
+        </div>
+    </div>
+
+    <div class="container pb-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+
+                <div class="card card-form p-4 shadow-sm mt-4">
+
+                    <h4 class="fw-bold" style="color: var(--primary-color)">Diagnosa Penyakit</h4>
+
+                    <h5 class="fw-bold mb-3 mt-4" style="color: var(--primary-color);">
+                        <i class="fas fa-images me-2"></i>Contoh Penyakit Daun
+                    </h5>
+
+                    <div class="row g-3 mb-4">
+                        <div class="col-6 col-md-3">
+                            <div class="card shadow-sm sample-card">
+                                <img src="{{ url_for('static', filename='img/karat_daun.png') }}" class="sample-img"
+                                    alt="Karat Daun">
+                                <div class="sample-label">Karat Daun</div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <div class="card shadow-sm sample-card">
+                                <img src="{{ url_for('static', filename='img/cercospora.png') }}" class="sample-img"
+                                    alt="Cercospora">
+                                <div class="sample-label">Cercospora</div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <div class="card shadow-sm sample-card">
+                                <img src="{{ url_for('static', filename='img/phoma.png') }}" class="sample-img"
+                                    alt="Phoma">
+                                <div class="sample-label">Phoma</div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <div class="card shadow-sm sample-card">
+                                <img src="{{ url_for('static', filename='img/sehat.jpg') }}" class="sample-img"
+                                    alt="Sehat">
+                                <div class="sample-label">Daun Sehat</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <form id="diagnosisForm" enctype="multipart/form-data">
+                        <h5 class="fw-bold mb-3" style="color: var(--primary-color);">
+                            <i class="fas fa-camera me-2"></i>Upload Foto Daun
+                        </h5>
+                        <div class="upload-area" onclick="document.getElementById('fileInput').click()">
+                            <input type="file" name="image" id="fileInput" accept="image/*" style="display: none;"
+                                onchange="previewImage(event)" required>
+                            <div id="uploadPlaceholder">
+                                <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                                <p class="mb-0 fw-bold">Klik untuk Upload Foto</p>
+                                <p class="small text-muted">Format: JPG, PNG (Max 5MB)</p>
+                            </div>
+                            <img id="imagePreview" src="#" alt="Preview Gambar">
+                        </div>
+
+                        <h5 class="fw-bold mb-4 mt-5" style="color: var(--primary-color);">
+                            <i class="fas fa-clipboard-list me-2"></i>Kondisi Fisik Tanaman
+                        </h5>
+                        <p class="text-muted small mb-4">Pilihlah kondisi yang paling sesuai dengan pengamatan Anda di
+                            lapangan.</p>
+
+                        <h5 class="fw-bold mt-4 mb-3 text-success"><i class="fas fa-clipboard-check me-2"></i>Analisis
+                            Visual Mendalam (8 Indikator)</h5>
+
+                        <div class="mb-3 p-3 bg-white rounded shadow-sm border">
+                            <div class="text-primary small fw-bold text-uppercase mb-1">
+                                <i class="fas fa-braille me-1"></i>Indikator 1: Tekstur Permukaan
+                            </div>
+                            <label class="form-label fw-bold">Apakah permukaan bercak terasa/terlihat seperti bubuk atau
+                                tepung?</label>
+                            <div class="d-flex justify-content-between text-muted small px-1 mb-2">
+                                <span>Licin/Kering</span>
+                                <span>Sedikit Kasar</span>
+                                <span>Berbubuk Halus</span>
+                                <span>Sangat Bertepung</span>
+                            </div>
+                            <input type="range" class="form-range" name="gejala_1" min="0" max="1" step="0.33"
+                                value="0">
+                        </div>
+
+                        <div class="mb-3 p-3 bg-white rounded shadow-sm border">
+                            <div class="text-primary small fw-bold text-uppercase mb-1">
+                                <i class="fas fa-palette me-1"></i>Indikator 2: Warna Khas (Karat)
+                            </div>
+                            <label class="form-label fw-bold">Apakah dominasi warna bercak adalah Oranye atau Kuning
+                                Cerah?</label>
+                            <div class="d-flex justify-content-between text-muted small px-1 mb-2">
+                                <span>Tidak (Hijau/Coklat)</span>
+                                <span>Kuning Pucat</span>
+                                <span>Oranye Jelas</span>
+                                <span>Oranye Bata</span>
+                            </div>
+                            <input type="range" class="form-range" name="gejala_2" min="0" max="1" step="0.33"
+                                value="0">
+                        </div>
+
+                        <div class="mb-3 p-3 bg-white rounded shadow-sm border">
+                            <div class="text-primary small fw-bold text-uppercase mb-1">
+                                <i class="fas fa-bullseye me-1"></i>Indikator 3: Pola Pusat (Mata Ayam)
+                            </div>
+                            <label class="form-label fw-bold">Apakah bercak memiliki pusat berwarna abu-abu/putih
+                                (seperti mata)?</label>
+                            <div class="d-flex justify-content-between text-muted small px-1 mb-2">
+                                <span>Polos</span>
+                                <span>Samar</span>
+                                <span>Jelas</span>
+                                <span>Sangat Kontras</span>
+                            </div>
+                            <input type="range" class="form-range" name="gejala_3" min="0" max="1" step="0.33"
+                                value="0">
+                        </div>
+
+                        <div class="mb-3 p-3 bg-white rounded shadow-sm border">
+                            <div class="text-primary small fw-bold text-uppercase mb-1">
+                                <i class="fas fa-shapes me-1"></i>Indikator 4: Bentuk Bercak
+                            </div>
+                            <label class="form-label fw-bold">Bagaimana bentuk bercak tersebut?</label>
+                            <div class="d-flex justify-content-between text-muted small px-1 mb-2">
+                                <span>Abstrak/Tak Beraturan</span>
+                                <span>Lonjong</span>
+                                <span>Agak Bulat</span>
+                                <span>Bulat Sempurna</span>
+                            </div>
+                            <input type="range" class="form-range" name="gejala_4" min="0" max="1" step="0.33"
+                                value="0">
+                        </div>
+
+                        <div class="mb-3 p-3 bg-white rounded shadow-sm border">
+                            <div class="text-primary small fw-bold text-uppercase mb-1">
+                                <i class="fas fa-map-marker-alt me-1"></i>Indikator 5: Posisi Awal
+                            </div>
+                            <label class="form-label fw-bold">Apakah bercak dimulai/dominan di pinggiran daun?</label>
+                            <div class="d-flex justify-content-between text-muted small px-1 mb-2">
+                                <span>Tidak (Di Tengah)</span>
+                                <span>Sedikit di Tepi</span>
+                                <span>Menjalar dari Tepi</span>
+                                <span>Pinggiran Gosong</span>
+                            </div>
+                            <input type="range" class="form-range" name="gejala_5" min="0" max="1" step="0.33"
+                                value="0">
+                        </div>
+
+                        <div class="mb-3 p-3 bg-white rounded shadow-sm border">
+                            <div class="text-primary small fw-bold text-uppercase mb-1">
+                                <i class="fas fa-adjust me-1"></i>Indikator 6: Kegelapan Warna (Phoma)
+                            </div>
+                            <label class="form-label fw-bold">Apakah warna bercak cenderung Hitam Pekat /
+                                Gosong?</label>
+                            <div class="d-flex justify-content-between text-muted small px-1 mb-2">
+                                <span>Tidak (Coklat/Kuning)</span>
+                                <span>Coklat Tua</span>
+                                <span>Hitam Kebiruan</span>
+                                <span>Hitam Arang</span>
+                            </div>
+                            <input type="range" class="form-range" name="gejala_6" min="0" max="1" step="0.33"
+                                value="0">
+                        </div>
+
+                        <div class="mb-3 p-3 bg-white rounded shadow-sm border">
+                            <div class="text-primary small fw-bold text-uppercase mb-1">
+                                <i class="fas fa-sun me-1"></i>Indikator 7: Lingkaran Kuning (Halo)
+                            </div>
+                            <label class="form-label fw-bold">Apakah di sekeliling bercak terdapat lingkaran (halo)
+                                berwarna kuning?</label>
+                            <div class="d-flex justify-content-between text-muted small px-1 mb-2">
+                                <span>Tidak Ada</span>
+                                <span>Tipis</span>
+                                <span>Jelas</span>
+                                <span>Lebar</span>
+                            </div>
+                            <input type="range" class="form-range" name="gejala_7" min="0" max="1" step="0.33"
+                                value="0">
+                        </div>
+
+                        <div class="mb-3 p-3 bg-white rounded shadow-sm border">
+                            <div class="text-primary small fw-bold text-uppercase mb-1">
+                                <i class="fas fa-chart-line me-1"></i>Indikator 8: Luas Kerusakan
+                            </div>
+                            <label class="form-label fw-bold">Berapa persen total area daun yang rusak?</label>
+                            <div class="d-flex justify-content-between text-muted small px-1 mb-2">
+                                <span>0% (Mulus)</span>
+                                <span>
+                                    < 10% (Bintik Kecil)</span>
+                                        <span>30-50% (Sedang)</span>
+                                        <span>> 50% (Parah)</span>
+                            </div>
+                            <input type="range" class="form-range" name="gejala_8" min="0" max="1" step="0.33"
+                                value="0">
+                        </div>
+
+                        <div class="d-grid gap-2 mt-5">
+                            <button type="submit" class="btn btn-lg rounded-pill fw-bold text-white shadow-sm"
+                                style="background-color: var(--primary-color);">
+                                <i class="fas fa-search-plus me-2"></i> Diagnosa Sekarang
+                            </button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="spinner-overlay" id="loadingSpinner">
+        <div class="spinner-content">
+            <div class="spinner-border text-light" style="width: 3rem; height: 3rem;" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="mt-3">Menganalisis gambar dan gejala...</p>
+        </div>
+    </div>
+
+    <div class="modal fade" id="resultModal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title fw-bold">Hasil Diagnosa</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="resultContent">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% include 'components/footer.html' %}
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        function previewImage(event) {
+            var reader = new FileReader();
+            reader.onload = function () {
+                var output = document.getElementById('imagePreview');
+                output.src = reader.result;
+                output.style.display = 'inline-block';
+                document.getElementById('uploadPlaceholder').style.display = 'none';
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        }
+
+        // Handle Form Submit
+        document.getElementById('diagnosisForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+            const spinner = document.getElementById('loadingSpinner');
+            const modal = new bootstrap.Modal(document.getElementById('resultModal'));
+
+            // Validasi gambar
+            if (!formData.get('image') || formData.get('image').size === 0) {
+                alert('Silakan upload foto daun terlebih dahulu!');
+                return;
+            }
+
+            // Show loading
+            spinner.style.display = 'flex';
+
+            try {
+                const response = await fetch('/predict', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+
+                // Hide loading
+                spinner.style.display = 'none';
+
+                if (response.ok) {
+                    displayResult(result);
+                    modal.show();
+                } else {
+                    alert('Error: ' + (result.error || 'Terjadi kesalahan'));
+                }
+            } catch (error) {
+                spinner.style.display = 'none';
+                alert('Gagal menghubungi server: ' + error.message);
+            }
+        });
+
+        function displayResult(data) {
+            const content = document.getElementById('resultContent');
+
+            const confidenceColor = data.confidence > 70 ? 'success' :
+                data.confidence > 50 ? 'warning' : 'danger';
+
+            content.innerHTML = `
+                <div class="text-center mb-4">
+                    <span class="badge bg-${confidenceColor} result-badge">
+                        ${data.disease_name}
+                    </span>
+                    <p class="text-muted mt-2">Tingkat Kepercayaan: <strong>${data.confidence}%</strong></p>
+                </div>
+
+                <div class="alert alert-info">
+                    <h6 class="fw-bold mb-2"><i class="fas fa-info-circle me-2"></i>Deskripsi</h6>
+                    <p class="mb-0">${data.description}</p>
+                </div>
+
+                <div class="alert alert-success">
+                    <h6 class="fw-bold mb-2"><i class="fas fa-medkit me-2"></i>Rekomendasi Penanganan</h6>
+                    <p class="mb-0">${data.treatment}</p>
+                </div>
+
+                <h6 class="fw-bold mt-4 mb-3">Detail Skor Analisis:</h6>
+                
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <small class="text-muted">Skor AI (60%)</small>
+                        ${Object.entries(data.ai_scores).map(([disease, score]) => `
+                            <div class="d-flex justify-content-between mb-1">
+                                <span>${disease}</span>
+                                <strong>${score}%</strong>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="col-md-6">
+                        <small class="text-muted">Skor Gejala (40%)</small>
+                        ${Object.entries(data.manual_scores).map(([disease, score]) => `
+                            <div class="d-flex justify-content-between mb-1">
+                                <span>${disease}</span>
+                                <strong>${score}%</strong>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+
+                <div class="alert alert-secondary">
+                    <small class="text-muted">Skor Akhir (Hybrid)</small>
+                    ${Object.entries(data.final_scores).map(([disease, score]) => `
+                        <div class="d-flex justify-content-between mb-1">
+                            <span class="fw-bold">${disease}</span>
+                            <strong>${score}%</strong>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+    </script>
+
+</body>
+
+</html>

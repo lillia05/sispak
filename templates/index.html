@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SISPAKO - Deteksi Penyakit Kopi</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        :root {
+            /* --- PALET WARNA --- */
+            --primary-color: #294B2D;   /* Coklat Kopi Gelap (Utama) */
+            --secondary-color: #DBE7C9; /* Hijau Daun (Aksen) */
+            --accent-color: #294B2D;    /* Bronze/Kopi Muda (Tombol) */
+            --light-bg: #DBE7C9;        /* Krem Sangat Muda (Background Body) */
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: var(--light-bg);
+            padding-top: 56px; 
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh; 
+        }
+
+        /* --- HEADER / NAVBAR --- */
+        .navbar-custom {
+            background-color: var(--primary-color);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            min-height: 56px; 
+        }
+        .navbar-brand, .nav-link {
+            color: #fff !important;
+        }
+        .nav-link {
+            color: rgba(255,255,255,0.85) !important;
+            margin-left: 15px;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+        .nav-link:hover {
+            color: #fff !important;
+            opacity: 1;
+        }
+
+        /* --- MENU AKTIF (HIGHLIGHT) --- */
+        .nav-link.active-page {
+            font-weight: bold;
+            border-bottom: 2px solid var(--secondary-color);
+            color: #fff !important;
+        }
+        
+        .btn-nav-action {
+            background-color: white;
+            color: var(--primary-color);
+            font-weight: bold;
+            border-radius: 50px;
+            padding: 8px 25px;
+            transition: 0.3s;
+        }
+        .btn-nav-action:hover {
+            background-color: var(--secondary-color);
+            color: #294B2D;
+        }
+
+        /* --- HERO SECTION --- */
+        .hero-section {
+            background: linear-gradient(rgba(151, 108, 58, 0.381), rgba(151, 108, 58, 0.381)), url('/static/img/kopi.png');
+            background-size: cover;
+            background-position: center;
+            height: 93vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+            margin-top: -1px; 
+        }
+
+        .btn-diagnosa-hero {
+            background-color: var(--accent-color);
+            color: white;
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-weight: bold;
+            text-decoration: none;
+            transition: 0.3s;
+            border: none;
+            display: inline-block;
+            box-shadow: 0 4px 15px rgba(210, 105, 30, 0.4);
+        }
+        .btn-diagnosa-hero:hover {
+            background-color: #DBE7C9;
+            color: var(--primary-color);
+            transform: translateY(-3px);
+        }
+
+        /* --- FEATURES --- */
+        .feature-icon-box {
+            width: 80px;
+            height: 80px;
+            background-color: rgba(41, 75, 45, 0.1); 
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            color: var(--primary-color); 
+            font-size: 2.5rem;
+        }
+
+        /* --- CARDS --- */
+        .card-penyakit {
+            border: none;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: 0.3s;
+            height: 100%;
+            background: white;
+        }
+        .card-penyakit:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        .card-penyakit img {
+            height: 200px;
+            object-fit: cover;
+        }
+        .btn-detail {
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            font-weight: 600;
+            border-radius: 20px;
+            text-decoration: none;
+            display: inline-block;
+            transition: 0.3s;
+        }
+        .btn-detail:hover {
+            background-color: var(--primary-color);
+            color: var(--secondary-color);
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            background-color: var(--primary-color); 
+            color: rgba(255,255,255,0.8);
+            padding-top: 3rem;
+            padding-bottom: 1.5rem;
+            margin-top: auto; 
+            border-top: 5px solid var(--accent-color); 
+        }
+    </style>
+</head>
+<body>
+
+    <!-- [ Manggil Navbar ] -->
+    {% include 'components/navbar.html' %}
+
+    <header class="hero-section">
+        <div class="container">
+            <h1 class="display-3 fw-bold mb-3">Jaga Kualitas Tanaman Kopi Anda</h1>
+            <p class="lead mb-4">
+                Sistem Pakar Cerdas dengan <strong>Metode Fuzzy</strong> untuk mendeteksi penyakit 
+                pada daun kopi secara akurat, cepat, dan terpercaya.
+            </p>
+        <a href="{{ url_for('diagnosa') }}" class="btn-diagnosa-hero">
+                <i class="fas fa-search me-2"></i> Cek Kesehatan Daun Kopi Anda
+            </a>
+        </div>
+    </header>
+
+    <section class="py-5" style="background-color: #f0f4f0;">
+        <div class="container">
+            
+            <div class="text-center mb-5">
+                <h2 class="fw-bold" style="color: var(--primary-color);">Kenali Musuh Tanaman Kopi</h2>
+                <p class="text-muted">Berikut adalah beberapa penyakit umum yang sering menyerang daun kopi.</p>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card card-penyakit">
+                        <img src="/static/img/karat_daun.png" class="card-img-top" alt="Karat Daun">
+                        <div class="card-body">
+                            <h5 class="card-title fw-bold">Karat Daun</h5>
+                            <h6 class="text-muted fst-italic mb-2">Hemileia vastatrix</h6>
+                            <p class="card-text small text-secondary">Penyakit paling merugikan. Ditandai dengan bercak kuning jingga seperti serbuk.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card card-penyakit">
+                        <img src="/static/img/cercospora.png" class="card-img-top" alt="Bercak Daun">
+                        <div class="card-body">
+                            <h5 class="card-title fw-bold">Bercak Cercospora</h5>
+                            <h6 class="text-muted fst-italic mb-2">Cercospora coffeicola</h6>
+                            <p class="card-text small text-secondary">Gejala berupa bercak bulat berwarna coklat dengan pusat berwarna putih kelabu.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card card-penyakit">
+                        <img src="/static/img/phoma.png" class="card-img-top" alt="Jamur Upas">
+                        <div class="card-body">
+                            <h5 class="card-title fw-bold">Bercak Phoma</h5>
+                            <h6 class="text-muted fst-italic mb-2">Phoma costarricensis</h6>
+                            <p class="card-text small text-secondary">Terlihat seperti jaring laba-laba putih atau lapisan kerak merah muda pada ranting.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-5">
+                <a href="{{ url_for('penyakit') }}" class="btn btn-detail rounded-pill px-5 py-2">
+                    Baca Selengkapnya
+                </a>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="py-5 bg-white">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="fw-bold" style="color: var(--primary-color);">Mengapa SISPAKO?</h2>
+            </div>
+
+            <div class="row g-4 text-center">
+                <div class="col-md-4">
+                    <div class="p-3">
+                        <div class="feature-icon-box">
+                            <i class="fas fa-brain "></i>
+                        </div>
+                        <h4 class="fw-bold" style="color: var(--primary-color)">Logika Fuzzy</h4>
+                        <p class="text-muted">Hasil diagnosa tidak kaku (Ya/Tidak), tapi berdasarkan tingkat keyakinan (persentase) gejala yang dialami.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="p-3">
+                        <div class="feature-icon-box">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <h4 class="fw-bold" style="color: var(--primary-color)">Hasil Cepat</h4>
+                        <p class="text-muted">Hanya butuh beberapa detik untuk mendapatkan hasil analisa penyakit setelah input gejala.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="p-3">
+                        <div class="feature-icon-box">
+                            <i class="fas fa-user-md"></i>
+                        </div>
+                        <h4 class="fw-bold" style="color: var(--primary-color)">Solusi Tepat</h4>
+                        <p class="text-muted">Dilengkapi dengan saran pengendalian dan rekomendasi obat/pupuk yang sesuai.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-5">
+                <a href="{{ url_for('tentang') }}" class="btn btn-detail rounded-pill px-5 py-2">
+                    Lihat Selengkapnya
+                </a>
+            </div>
+
+        </div>
+    </section>
+
+    {% include 'components/footer.html' %}
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
