@@ -470,61 +470,91 @@
             }
         });
 
-        function displayResult(data) {
+       function displayResult(data) {
             const content = document.getElementById('resultContent');
 
             const confidenceColor = data.confidence > 70 ? 'success' :
                 data.confidence > 50 ? 'warning' : 'danger';
 
+            // 1. Buat HTML untuk Tabel Perhitungan Detail
+            let calculationRows = '';
+            for (const [disease, finalScore] of Object.entries(data.final_scores)) {
+                let aiRaw = data.ai_scores[disease];
+                let manualRaw = data.manual_scores[disease];
+                
+                // Hitung nilai kontribusi agar user bisa melihat matematikanya
+                let aiContribution = (aiRaw * 0.6).toFixed(2);
+                let manualContribution = (manualRaw * 0.4).toFixed(2);
+
+                calculationRows += `
+                    <tr>
+                        <td class="fw-bold">${disease}</td>
+                        <td>
+                            <div class="small text-muted">${aiRaw}% × 0.6</div>
+                            <div>= <strong>${aiContribution}</strong></div>
+                        </td>
+                        <td>
+                            <div class="small text-muted">${manualRaw}% × 0.4</div>
+                            <div>= <strong>${manualContribution}</strong></div>
+                        </td>
+                        <td class="fw-bold text-end text-primary bg-light">
+                            ${finalScore}%
+                        </td>
+                    </tr>
+                `;
+            }
+
+            // 2. Render HTML Utama + Tombol Perhitungan
             content.innerHTML = `
                 <div class="text-center mb-4">
-                    <span class="badge bg-${confidenceColor} result-badge">
+                    <span class="badge bg-${confidenceColor} result-badge shadow">
                         ${data.disease_name}
                     </span>
                     <p class="text-muted mt-2">Tingkat Kepercayaan: <strong>${data.confidence}%</strong></p>
                 </div>
 
-                <div class="alert alert-info">
-                    <h6 class="fw-bold mb-2"><i class="fas fa-info-circle me-2"></i>Deskripsi</h6>
-                    <p class="mb-0">${data.description}</p>
+                <div class="alert alert-info border-0 shadow-sm" style="background-color: #e3f2fd;">
+                    <h6 class="fw-bold mb-2 text-primary"><i class="fas fa-info-circle me-2"></i>Deskripsi</h6>
+                    <p class="mb-0 small">${data.description}</p>
                 </div>
 
-                <div class="alert alert-success">
-                    <h6 class="fw-bold mb-2"><i class="fas fa-medkit me-2"></i>Rekomendasi Penanganan</h6>
-                    <p class="mb-0">${data.treatment}</p>
+                <div class="alert alert-success border-0 shadow-sm" style="background-color: #e8f5e9;">
+                    <h6 class="fw-bold mb-2 text-success"><i class="fas fa-medkit me-2"></i>Rekomendasi Penanganan</h6>
+                    <p class="mb-0 small">${data.treatment}</p>
                 </div>
 
-                <h6 class="fw-bold mt-4 mb-3">Detail Skor Analisis:</h6>
-                
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <small class="text-muted">Skor AI (60%)</small>
-                        ${Object.entries(data.ai_scores).map(([disease, score]) => `
-                            <div class="d-flex justify-content-between mb-1">
-                                <span>${disease}</span>
-                                <strong>${score}%</strong>
-                            </div>
-                        `).join('')}
-                    </div>
-                    <div class="col-md-6">
-                        <small class="text-muted">Skor Gejala (40%)</small>
-                        ${Object.entries(data.manual_scores).map(([disease, score]) => `
-                            <div class="d-flex justify-content-between mb-1">
-                                <span>${disease}</span>
-                                <strong>${score}%</strong>
-                            </div>
-                        `).join('')}
-                    </div>
+                <div class="d-grid gap-2 mt-4">
+                    <button class="btn btn-outline-secondary rounded-pill" type="button" data-bs-toggle="collapse" data-bs-target="#mathDetails" aria-expanded="false" aria-controls="mathDetails">
+                        <i class="fas fa-calculator me-2"></i>Lihat Detail Perhitungan Matematis
+                    </button>
                 </div>
 
-                <div class="alert alert-secondary">
-                    <small class="text-muted">Skor Akhir (Hybrid)</small>
-                    ${Object.entries(data.final_scores).map(([disease, score]) => `
-                        <div class="d-flex justify-content-between mb-1">
-                            <span class="fw-bold">${disease}</span>
-                            <strong>${score}%</strong>
+                <div class="collapse mt-3" id="mathDetails">
+                    <div class="card card-body bg-light border-0 small">
+                        <h6 class="fw-bold text-dark border-bottom pb-2 mb-3">Rumus Hybrid Diagnosis</h6>
+                        <div class="alert alert-warning py-2 px-3 mb-3">
+                            <code>Skor Akhir = (Skor Analisis Gambar × 0.6) + (Skor Gejala × 0.4)</code>
                         </div>
-                    `).join('')}
+
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-sm bg-white mb-0">
+                                <thead class="table-light text-center">
+                                    <tr>
+                                        <th>Penyakit</th>
+                                        <th>Analisis Gambar (60%)</th>
+                                        <th>Manual (40%)</th>
+                                        <th>Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${calculationRows}
+                                </tbody>
+                            </table>
+                        </div>
+                        <p class="text-muted fst-italic mt-2 mb-0" style="font-size: 0.8rem;">
+                            *Penyakit dengan skor Total tertinggi dipilih sebagai hasil diagnosa.
+                        </p>
+                    </div>
                 </div>
             `;
         }

@@ -40,8 +40,8 @@ DISEASE_INFO = {
     }
 }
 
-# Bobot untuk hybrid diagnosis (AI vs Manual)
-ALPHA = 0.6  # Bobot AI
+# Bobot untuk hybrid diagnosis (Analisis vs Manual)
+ALPHA = 0.6  # Bobot Analisis
 BETA = 0.4   # Bobot Gejala Manual
 
 # ==================== LOAD MODEL ====================
@@ -90,11 +90,9 @@ def predict():
         img_resized = img.resize((IMG_SIZE, IMG_SIZE))
         img_arr = np.expand_dims(preprocess_input(np.array(img_resized)), axis=0)
         
-        # Prediksi AI
+        # Prediksi Analisis
         ai_probs = model.predict(img_arr, verbose=0)[0]
 
-        # 2. AMBIL NILAI GEJALA MANUAL (dari form)
-        # 2. AMBIL NILAI GEJALA MANUAL (dari form)
         # 2. AMBIL NILAI GEJALA MANUAL
         gejala_values = []
         for i in range(1, 9):  # Loop 1 sampai 8
@@ -133,7 +131,6 @@ def predict():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-# ==================== LOGIKA GEJALA MANUAL ====================
 # ==================== LOGIKA FUZZY MANUAL ====================
 def calculate_manual_scores(gejala_values):
     """
