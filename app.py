@@ -134,76 +134,126 @@ def predict():
 # ==================== RULE BASE (R-01 s/d R-20) ====================
 def calculate_expert_rules(i):
     """
-    Implementasi Rule Base menggunakan Logika Fuzzy sederhana.
-    Min = AND, Max = OR.
+    Implementasi Presisi R-01 s/d R-20
+    Menggunakan Logika Threshold (Ambang Batas) untuk IF-THEN rules.
     """
-    # Inisialisasi skor penyakit
     scores = {'karat_daun': 0.0, 'cercospora': 0.0, 'phoma': 0.0, 'sehat': 0.0}
-    
-    # Helper variables (aliases agar koding lebih pendek)
-    bubuk = i['tekstur_bubuk']
-    oranye = i['warna_oranye']
-    putih = i['pusat_putih']
-    halo = i['halo_kuning']
-    hitam = i['bercak_hitam']
+
+    # --- DEFINISI THRESHOLD (BATAS NILAI) ---
+    TH_TINGGI = 0.7  # Mewakili: Sangat Jelas, Pekat, Besar, Rusak Parah
+    TH_SEDANG = 0.4  # Mewakili: Cukup, Sedang, Terlihat
+    TH_RENDAH = 0.2  # Mewakili: Sedikit, Samar, Tipis
+
+    # --- MAPPING INPUT ---
+    bubuk    = i['tekstur_bubuk']
+    oranye   = i['warna_oranye']
+    putih    = i['pusat_putih']
+    halo     = i['halo_kuning']
+    hitam    = i['bercak_hitam']
     keriting = i['pinggiran_keriting']
-    pucuk = i['posisi_pucuk']
+    pucuk    = i['posisi_pucuk']
 
-    # --- PENYAKIT KARAT DAUN (Leaf Rust) ---
-    # R-01: IF Bubuk Tinggi AND Oranye Tinggi
-    r01 = min(bubuk, oranye)
-    # R-02: IF (Bubuk Sedang/Tinggi) AND Oranye Sedang
-    r02 = min(bubuk, max(0.5, oranye)) * 0.8 
-    # R-03: Oranye Tinggi, Bubuk Rendah, Hitam Rendah (Fase Awal)
-    r03 = min(oranye, (1-bubuk), (1-hitam)) * 0.6
-    # R-04: Oranye Ada, Putih Rendah, Pucuk Rendah
-    r04 = min(oranye, (1-putih), (1-pucuk)) * 0.8
-    # R-16 & R-17 (Rules Tambahan Pembeda)
-    r16 = min(oranye, (1-halo), (1-putih))
-    r17 = min(bubuk, (1-putih)) * 0.7
+    # 1. PENYAKIT KARAT DAUN (Leaf Rust)
+    
+    # R-01: IF Tekstur_Bubuk Tinggi AND Warna_Oranye Tinggi
+    if bubuk >= TH_TINGGI and oranye >= TH_TINGGI:
+        scores['karat_daun'] = max(scores['karat_daun'], 1.0)
 
-    scores['karat_daun'] = max(r01, r02, r03, r04, r16, r17)
+    # R-02: IF (Bubuk Sedang OR Tinggi) AND Warna_Oranye Sedang
+    if bubuk >= TH_SEDANG and oranye >= TH_SEDANG:
+        scores['karat_daun'] = max(scores['karat_daun'], 0.8)
 
-    # --- PENYAKIT CERCOSPORA (Mata Ayam) ---
-    # R-05: IF Pusat Putih Tinggi AND Halo Kuning Tinggi
-    r05 = min(putih, halo)
-    # R-06: IF (Putih Ada) AND Halo Sedang
-    r06 = min(putih, halo) * 0.8
-    # R-07: Putih Tinggi, Halo Rendah, Keriting Rendah
-    r07 = min(putih, (1-halo), (1-keriting)) * 0.7
-    # R-08: Gejala Samar tapi bukan Oranye/Hitam
-    r08 = min(max(putih, halo), (1-oranye), (1-hitam)) * 0.5
-    # R-14 & R-15 (Pembeda Karat)
-    r14 = min(halo, (1-bubuk))
-    r15 = min(halo, (1-oranye)) * 0.9
-    # R-18 (Pembeda Phoma: Putih Jelas + Daun Datar)
-    r18 = min(putih, (1-keriting))
+    # R-03: IF Oranye Tinggi AND Bubuk Rendah AND Hitam Rendah (Fase Awal)
+    if (oranye >= TH_TINGGI) and (bubuk < TH_SEDANG) and (hitam < TH_RENDAH):
+        scores['karat_daun'] = max(scores['karat_daun'], 0.6)
 
-    scores['cercospora'] = max(r05, r06, r07, r08, r14, r15, r18)
+    # R-04: IF (Oranye Sedang OR Tinggi) AND Putih Rendah AND Pucuk Rendah
+    if (oranye >= TH_SEDANG) and (putih < TH_RENDAH) and (pucuk < TH_RENDAH):
+        scores['karat_daun'] = max(scores['karat_daun'], 0.8)
 
-    # --- PENYAKIT PHOMA (Bercak Hitam) ---
-    # R-09: IF Hitam Tinggi AND Keriting Tinggi
-    r09 = min(hitam, keriting)
-    # R-10: Pucuk Tinggi AND Keriting Tinggi
-    r10 = min(pucuk, keriting) * 0.9
-    # R-11: Hitam Tinggi AND Pucuk Tinggi AND Putih Rendah
-    r11 = min(hitam, pucuk, (1-putih))
-    # R-12: Hitam/Keriting Ada AND Oranye Rendah
-    r12 = min(max(hitam, keriting), (1-oranye)) * 0.6
-    # R-19: Hitam + Keriting + Tidak Putih
-    r19 = min(hitam, keriting, (1-putih))
-    # R-20: Keriting Sedikit + Putih Samar -> Prioritas Phoma
-    r20 = min(keriting * 0.5, putih * 0.3) 
+    # --- RULES TAMBAHAN (PEMBEDA) ---
+    
+    # R-16: IF Oranye Jelas AND Halo Tidak Ada AND Putih Tidak Ada
+    if (oranye >= TH_TINGGI) and (halo < TH_RENDAH) and (putih < TH_RENDAH):
+        scores['karat_daun'] = max(scores['karat_daun'], 1.0)
 
-    scores['phoma'] = max(r09, r10, r11, r12, r19, r20)
+    # R-17: IF Bubuk Sedikit (>= Rendah) AND Putih Tidak Ada
+    if (bubuk >= TH_RENDAH) and (putih < TH_RENDAH):
+        scores['karat_daun'] = max(scores['karat_daun'], 0.7)
 
-    # --- KONDISI SEHAT ---
-    # R-13: Semua gejala rendah
-    r13 = min((1-bubuk), (1-oranye), (1-putih), (1-hitam), (1-keriting))
-    scores['sehat'] = r13
+    # 2. PENYAKIT BERCAK DAUN CERCOSPORA (Mata Ayam)
+
+    # R-05: IF Pusat_Putih Tinggi AND Halo_Kuning Tinggi
+    if putih >= TH_TINGGI and halo >= TH_TINGGI:
+        scores['cercospora'] = max(scores['cercospora'], 1.0)
+
+    # R-06: IF (Putih Sedang OR Tinggi) AND Halo_Kuning Sedang
+    if putih >= TH_SEDANG and halo >= TH_SEDANG:
+        scores['cercospora'] = max(scores['cercospora'], 0.8)
+
+    # R-07: IF Putih Tinggi AND Halo Rendah AND Keriting Rendah
+    if (putih >= TH_TINGGI) and (halo < TH_SEDANG) and (keriting < TH_RENDAH):
+        scores['cercospora'] = max(scores['cercospora'], 0.6)
+
+    # R-08: IF (Putih Sedang OR Halo Sedang) AND Oranye Rendah AND Hitam Rendah
+    if (putih >= TH_SEDANG or halo >= TH_SEDANG) and (oranye < TH_RENDAH) and (hitam < TH_RENDAH):
+        scores['cercospora'] = max(scores['cercospora'], 0.5)
+
+    # --- RULES TAMBAHAN (PEMBEDA) ---
+
+    # R-14: IF Halo Jelas AND Bubuk Tidak Ada
+    if (halo >= TH_TINGGI) and (bubuk < TH_RENDAH):
+        scores['cercospora'] = max(scores['cercospora'], 1.0)
+
+    # R-15: IF Halo Jelas AND Oranye Tidak Ada
+    if (halo >= TH_TINGGI) and (oranye < TH_RENDAH):
+        scores['cercospora'] = max(scores['cercospora'], 0.8)
+
+    # R-18: IF Putih Jelas AND Pinggiran Normal (Tidak Keriting)
+    if (putih >= TH_TINGGI) and (keriting < TH_RENDAH):
+        scores['cercospora'] = max(scores['cercospora'], 0.8)
+    
+    # 3. PENYAKIT PHOMA (American Leaf Spot)    
+
+    # R-09: IF Bercak_Hitam Tinggi AND Pinggiran_Keriting Tinggi
+    if hitam >= TH_TINGGI and keriting >= TH_TINGGI:
+        scores['phoma'] = max(scores['phoma'], 1.0)
+
+    # R-10: IF (Pucuk Sedang OR Tinggi) AND Pinggiran_Keriting Tinggi
+    if pucuk >= TH_SEDANG and keriting >= TH_TINGGI:
+        scores['phoma'] = max(scores['phoma'], 0.8)
+
+    # R-11: IF Bercak_Hitam Tinggi AND Pucuk Tinggi AND Pusat_Putih Rendah
+    if (hitam >= TH_TINGGI) and (pucuk >= TH_TINGGI) and (putih < TH_RENDAH):
+        scores['phoma'] = max(scores['phoma'], 0.8)
+
+    # R-12: IF (Hitam Sedang OR Tinggi) AND (Keriting Sedang OR Tinggi) AND Oranye Rendah
+    if (hitam >= TH_SEDANG) and (keriting >= TH_SEDANG) and (oranye < TH_RENDAH):
+        scores['phoma'] = max(scores['phoma'], 0.6)
+
+    # --- RULES TAMBAHAN (PEMBEDA) ---
+
+    # R-19: IF Hitam Tinggi AND Keriting Cukup (Sedang) AND Putih Tidak Ada
+    if (hitam >= TH_TINGGI) and (keriting >= TH_SEDANG) and (putih < TH_RENDAH):
+        scores['phoma'] = max(scores['phoma'], 1.0)
+    
+    # R-20: IF Keriting Sedikit (>= Rendah) AND Putih Samar (>= Rendah tapi < Tinggi)
+    # Prioritas Phoma Sedang, Cercospora Rendah
+    if (keriting >= TH_RENDAH) and (putih >= TH_RENDAH and putih < TH_TINGGI):
+        scores['phoma'] = max(scores['phoma'], 0.6)      # Phoma Sedang
+        scores['cercospora'] = min(scores['cercospora'], 0.4) # Cercospora Rendah/Turun
+
+    # 4. KONDISI SEHAT    
+    # R-13: IF Semua Gejala Rendah (Tidak Ada)
+    if (bubuk < TH_RENDAH) and (oranye < TH_RENDAH) and (putih < TH_RENDAH) and \
+       (hitam < TH_RENDAH) and (keriting < TH_RENDAH):
+        scores['sehat'] = 1.0
+    else:
+        # Fallback logic jika tidak sehat tapi tidak ada penyakit yang kuat
+        if max(scores.values()) < 0.3:
+            scores['sehat'] = 0.5 # Kemungkinan masalah abiotik/bukan penyakit di database
 
     return scores
-
 if __name__ == '__main__':
     load_model()
     app.run(debug=True, host='0.0.0.0', port=5000)
